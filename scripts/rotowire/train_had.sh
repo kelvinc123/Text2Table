@@ -13,7 +13,7 @@ size="base"
 
 # train
 mkdir checkpoints
-CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python custom_train.py --num-workers 16 ${DATA_PATH}/bins \
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python custom_train.py --num-workers 8 ${DATA_PATH}/bins \
     --user-dir src/ \
     --seed $seed \
     --keep-best-checkpoints 3 --save-interval $INTERVAL --validate-interval $INTERVAL \
@@ -34,9 +34,10 @@ CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 python custom_train.py --num-workers 16 ${D
     --weight-decay 0.01 --optimizer adam --adam-betas "(0.9, 0.999)" --adam-eps 1e-08 \
     --clip-norm 0.1 \
     --lr-scheduler inverse_sqrt --lr $LR --max-update $TOTAL_NUM_UPDATES --warmup-updates $WARMUP_UPDATES --warmup-init-lr '1e-07' \
-    --fp16 --update-freq $UPDATE_FREQ \
+    --update-freq $UPDATE_FREQ \
     --skip-invalid-size-inputs-valid-test \
     --find-unused-parameters 2>&1 | tee checkpoints/log
+    # --fp16
 
 # average checkpoints
-bash scripts/eval/average_ckpt_best.sh checkpoints/
+#bash scripts/eval/average_ckpt_best.sh checkpoints/
