@@ -1,0 +1,1 @@
+python generate_gpt_prediction.py --api_key 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 --engine_id ada:ft-personal-2023-04-04-18-21-16 --text_path ./data/e2e/test.text --output_path ./data/e2e/test_ada_4e.pred
