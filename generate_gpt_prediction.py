@@ -40,11 +40,14 @@ class Predictor:
                                         prompt = texts[i],
                                         stop=[" |\n"])
                 result = [res["text"].strip() for res in result["choices"]]
+            except openai.error.AuthenticationError:
+                print(f"There is a problem with the API_KEY please make sure that the provided API_KEY is correct!")
+                sys.exit(1)
             except:
                 result = [""]
-            finally:
-                with open(predpath, "a") as f:
-                    f.write(f"{result[0]}\n")
+
+            with open(predpath, "a") as f:
+                f.write(f"{result[0]}\n")
         print("\n")
 
 if __name__ == "__main__":
