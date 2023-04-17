@@ -10,3 +10,12 @@ def parse_args():
     parser.add_argument("--output_path", required=True, help="Output filepath for the prediction")
     args = parser.parse_args()
     return args 
+
+def parse_args_app():
+    parser = argparse.ArgumentParser()
+
+    # General settings
+    parser.add_argument("--api_key", required=True, help="OPEN AI API KEY")
+    parser.add_argument("--engine_id", required=True, help="OPEN AI Engine ID for a fine tuned model")
+    args = parser.parse_args()
+    return args 

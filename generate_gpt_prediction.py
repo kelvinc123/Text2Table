@@ -25,6 +25,20 @@ class Predictor:
         openai.api_key = api_key
         self.engine_id = engine_id
 
+    def predict(self, text):
+        try:
+            result = openai.Completion.create(model = self.engine_id, 
+                                    prompt = text + "\n",
+                                    stop=[" |\n"],
+                                    max_tokens=1300)
+            result = [res["text"].strip() for res in result["choices"]][0]
+        except openai.error.AuthenticationError:
+            print(f"There is a problem with the API_KEY please make sure that the provided API_KEY is correct!")
+            sys.exit(1)
+        except:
+            result = [""][0]
+        return result
+
     def generate_pred(self, textpath, predpath):
         texts = []
         with open(textpath) as f:
@@ -35,19 +49,11 @@ class Predictor:
         for i in range(len(texts)):
             print(f"Working on {i}/{len(texts)} of {predpath}", end="\r")
             time.sleep(1)
-            try:
-                result = openai.Completion.create(model = self.engine_id, 
-                                        prompt = texts[i],
-                                        stop=[" |\n"])
-                result = [res["text"].strip() for res in result["choices"]]
-            except openai.error.AuthenticationError:
-                print(f"There is a problem with the API_KEY please make sure that the provided API_KEY is correct!")
-                sys.exit(1)
-            except:
-                result = [""]
+            result = self.predict(texts[i])
 
             with open(predpath, "a") as f:
-                f.write(f"{result[0]}\n")
+                f.write(f"{result}\n")
+
         print("\n")
 
 if __name__ == "__main__":
